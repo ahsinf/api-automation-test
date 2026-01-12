@@ -1,46 +1,70 @@
 # API Automation Testing - FakerAPI
 
-This project is an automation testing framework for REST APIs using **Java** and **RestAssured**. The focus of testing is on endpoints`Products` from [FakerAPI](https://fakerapi.it/).
+This project is a professional-grade API automation testing framework built with **Java** and **RestAssured**. It is designed to validate data integrity, filtering logic, and boundary cases for the [FakerAPI](https://fakerapi.it/) endpoints.
 
 ## 🚀 Tech Stack
-* **Java 11+**
-* **RestAssured** (API Request)
-* **JUnit 5** (Test Runner)
-* **AssertJ** (Assertion)
-* **Maven** (Build Tool)
+* **Language:** Java 11 or higher
+* **API Client:** RestAssured (Fluent API testing)
+* **Test Runner:** JUnit 5 (Modern test execution)
+* **Assertion:** AssertJ (Human-readable assertions)
+* **Build Tool:** Maven (Dependency and build management)
 
-## 📁 Structure Proyek
-```
-The project follows a standard structure Maven `src/test/java` to separate between test logic and supporting data.
+## 📋 Prerequisites & Environment Setup
+To run this project locally, ensure your environment meets the following requirements:
+
+1. **Java Development Kit (JDK) 11+**:
+   - Check version: `java -version`
+2. **Apache Maven**:
+   - Check version: `mvn -version`
+3. **Internet Access**: Required to download Maven dependencies and reach the public FakerAPI endpoints.
+4. **IDE (Optional):** IntelliJ IDEA is recommended for the best development experience.
+
+## 📁 Project Structure
+The project follows a standard Maven directory structure to ensure modularity and clean code.
+```text
 api-automation-test/
 ├── src/
-│   ├── main/java/              
-│   │   └── utils/
-│   │       └── ConfigReader.java
-│   └── test/java/           
-│       ├── api/
-│       │   ├── endpoints.java 
-│       │   └── tests/
-│       │       └── ProductApiTest.java  
-│       └── base/
-│           └── BaseTest.java   
-├── target/                    
-├── pom.xml                     
-└── README.md                  
+│   └── test/java/              
+│       ├── api/tests/          # Test classes (Products, Persons, Companies)
+│       ├── api/endpoints.java  # Centralized Endpoint configurations
+│       └── base/BaseTest.java  # Global setup (Base URI and common configs)
+├── .gitignore                  # Excludes target/ and IDE files from Git
+├── pom.xml                     # Maven configuration and dependencies
+└── README.md
 ```
----
-## 📝 Scenario Test
-1. **TC01 - Get Products Success**: Validates response code 200, JSON format, and mandatory fields (status, code).
-2. **TC02 - Data Consistency**: Ensures the number of items in the `data` list matches the query parameter `_quantity`.
-3. **TC03 - Data Integrity**: Validates the `price` field is not empty and the `image` field has a valid URL format.
-4. **TC04 - Boundary Case**: Tests the API response when the `_quantity` parameter is set to 0.
+## 📝 Test Scenarios
+his framework covers 11 critical test scenarios across three different endpoints:
 
-## 🛠️ How to Run the Test
-1. Clone this repository.
-2. Make sure Maven is installed (`mvn -version`).
-3. Run the following command in the terminal:
+1. **Products API**
+- TC01 - Get Products Success: Validates 200 OK status and correct JSON structure.
+- TC02 - Data Consistency: Ensures the returned items count matches the _quantity parameter.
+- TC03 - Data Integrity: Validates that price is a numeric value and image is a valid URL.
+- TC04 - Boundary Case: Tests behavior when _quantity is set to 0 (Bug Detected: Returns 10 items instead of 0).
+
+2. **Persons API**
+- TC05 - Filter by Gender: Confirms that the female filter returns only female data entries.
+- TC06 - Address Object Check: Validates the presence and integrity of nested address objects (city, country).
+- TC07 - Birthday Range: Ensures the birth year aligns with the requested _birthday_start filter.
+- TC08 - Negative - Invalid Format: Tests how the API handles incorrect date formats (e.g., DD-Mon-YYYY).
+
+3. **Companies API**
+- TC09 - Get Companies Success: Validates successful data retrieval for the Companies endpoint.
+- TC10 - Contact Details: Ensures email, phone, and website fields are correctly formatted.
+- TC11 - Country Data Check: Validates that the country field is not null (Bug Detected: Found null values in certain entries).
+
+## 🛠️ How to Run the Tests
+1. **Clone the repository:**
 ```bash
-mvn clean test
+    git clone https://github.com/ahsinf/api-automation-test.git
+    cd api-automation-test
 ```
-## 📊 Hasil Pengujian
-The test report will appear in the terminal via the Maven Surefire plugin and the HTML report file can be found in the target/surefire-reports folder.
+2. **Execute all tests:**
+```bash
+    mvn clean test
+```
+3. **Generate HTML Report:**
+```bash
+    mvn surefire-report:report
+```
+## 📊 Reporting
+After running the report command, you can find a visual representation of the test results (Pass/Fail status and error logs) at: target/site/surefire-report.html (Open this file in any web browser like Chrome or Edge).
