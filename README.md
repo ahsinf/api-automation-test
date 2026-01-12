@@ -41,6 +41,6 @@ api-automation-test/
 3. Run the following command in the terminal:
 ```bash
 mvn clean test
-
+```
 ## 📊 Hasil Pengujian
 The test report will appear in the terminal via the Maven Surefire plugin and the HTML report file can be found in the target/surefire-reports folder.
